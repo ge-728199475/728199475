@@ -1,0 +1,29 @@
+#include <stdio.h> 
+#include <stdlib.h>
+#include <windows.h>
+#pragma warning(disable:4996)
+int main()
+{
+	int a;
+	a = 0;
+	double mima;
+	printf("请输入密码：");
+	scanf("%lf", &mima);
+	while (a<=3)
+	{
+		
+		if (mima == 728199475)
+		{
+			system("start C:\\\"Program Files (x86)\\Google\\Chrome\\Application\"\\chrome.exe");
+			break;
+		}
+		else
+		{
+			printf("密码错误，还有%d次机会",3-a);
+			scanf("%lf", &mima);
+			a++;
+		}
+	}
+	system("pause");
+	return 0;
+}
