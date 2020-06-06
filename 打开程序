@@ -1,0 +1,58 @@
+#include <stdio.h> 
+#include <stdlib.h>
+#include <windows.h>
+#pragma warning(disable:4996)
+int main()
+{
+	int a;
+
+	printf("1：QQ\n");
+	printf("2：chrome\n");
+	printf("3：pixiv\n");
+	printf("4：内存爆炸\n");
+	printf("5：微信\n");
+	printf("6：一键开启\n");
+	printf("请输入序列号：");
+	scanf("%d", &a);
+	double	b;
+	b = 1;
+	while (b==1)
+	{
+
+		switch (a)
+		{
+		case 1:
+			system("start C:\\\"Users\\72819\\Desktop\\The World\\TongXun\"\\腾讯QQ.lnk");
+			break;
+		case 2:
+			system("start C:\\\"Users\\72819\\Desktop\\The World\"\\GoogleChrome.lnk");
+			break;
+		case 3:
+
+			system("start C:\\\"Users\\72819\\Desktop\\The World\\pixiv\"\\pixiv.lnk");
+			break;
+		case 4:
+			system("start C:\\\"Users\\72819\\Desktop\\The World\"\\WiseMemoryOptimizer.lnk");
+			break;
+		case 5:
+			system("start C:\\\"Users\\72819\\Desktop\\The World\\TongXun\"\\微信.lnk");
+			break;
+		case 6:
+			system("start C:\\\"Users\\72819\\Desktop\\The World\"\\一键开启.bat");
+			break;
+		default:
+			printf("没有此应用\n");
+			system("pause");
+			
+		}
+		printf("如果还需打开请输入0,不需就输入1:");
+        scanf("%d", &b);
+		if (b==1)
+		{
+        printf("请输入序列号：");
+		scanf("%d", &a);
+		}
+		
+	}
+	return 0;
+}
