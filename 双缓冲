@@ -1,0 +1,137 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include <Windows.h>
+
+
+HANDLE hOutput, hOutBuf;//控制台屏幕缓冲区句柄
+COORD coord = { 0,0 };
+//双缓冲处理显示
+DWORD bytes = 0;
+char map[20][20] = {
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,2,
+	2,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,0,0,0,2,
+	2,0,0,0,0,0,0,3,3,3,3,3,3,3,3,3,0,0,0,2,
+	2,0,0,0,0,0,0,0,3,3,3,3,3,3,3,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+};
+
+void show()
+{
+	int j;
+	int i;
+
+	/* for (i = 0; i < 20; i++)
+	 {
+		 for (j = 0; j < 20; j++)
+		 {
+			 map[i][j] = '*';
+		 }
+
+		 }*/
+
+
+	for (i = 0; i < 20; i++)
+	{
+		for (j = 0; j < 20; j++)
+		{
+			switch (map[i][j])
+			{
+			case 1:
+				map[i][j] = '*';
+				break;
+			case 0:
+				map[i][j] = '+';
+				break;
+			case 2:
+				map[i][j] = '-';
+				break;
+			case 3:
+				map[i][j] = '%';
+				break;
+			}
+		}
+	}
+	for (i = 0; i < 20; i++)
+	{
+		coord.Y = i;
+		WriteConsoleOutputCharacterA(hOutBuf, map[i], 20, coord, &bytes);
+	}
+	//设置新的缓冲区为活动显示缓冲
+	SetConsoleActiveScreenBuffer(hOutBuf);
+	Sleep(500);
+
+	for (i = 0; i < 20; i++)
+	{
+		for (j = 0; j < 20; j++)
+		{
+			switch (map[i][j])
+			{
+			case 1:
+				map[i][j] = '*';
+				break;
+			case 0:
+				map[i][j] = '+';
+				break;
+			case 2:
+				map[i][j] = '-';
+				break;
+			case 3:
+				map[i][j] = '%';
+				break;;
+			}
+
+			for (i = 0; i < 20; i++)
+			{
+				coord.Y = i;
+				WriteConsoleOutputCharacterA(hOutput, map[i], 20, coord, &bytes);
+			}
+			//设置新的缓冲区为活动显示缓冲
+			SetConsoleActiveScreenBuffer(hOutput);
+			Sleep(500);
+		}
+	}
+}
+void main()
+{
+	//创建新的控制台缓冲区
+	hOutBuf = CreateConsoleScreenBuffer(
+		GENERIC_WRITE,//定义进程可以往缓冲区写数据
+		FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+		NULL,
+		CONSOLE_TEXTMODE_BUFFER,
+		NULL
+	);
+	hOutput = CreateConsoleScreenBuffer(
+		GENERIC_WRITE,//定义进程可以往缓冲区写数据
+		FILE_SHARE_WRITE,//定义缓冲区可共享写权限
+		NULL,
+		CONSOLE_TEXTMODE_BUFFER,
+		NULL
+	);
+	//隐藏两个缓冲区的光标
+	CONSOLE_CURSOR_INFO cci;
+	cci.bVisible = 0;
+	cci.dwSize = 1;
+	SetConsoleCursorInfo(hOutput, &cci);
+	SetConsoleCursorInfo(hOutBuf, &cci);
+
+	while (1)
+	{
+		show();
+	}
+}
